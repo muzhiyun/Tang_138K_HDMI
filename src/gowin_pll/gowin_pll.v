@@ -5,20 +5,20 @@
 //Part Number: GW5AST-LV138FPG676AC1/I0
 //Device: GW5AST-138B
 //Device Version: B
-//Created Time: Sat Sep 30 15:11:18 2023
+//Created Time: Sun Oct 01 17:12:16 2023
 
-module Gowin_PLL (lock, clkout0, clkout1, clkin);
+module Gowin_PLL (lock, clkout0, clkout1, clkout2, clkout6, clkin);
 
 output lock;
 output clkout0;
 output clkout1;
+output clkout2;
+output clkout6;
 input clkin;
 
-wire clkout2_o;
 wire clkout3_o;
 wire clkout4_o;
 wire clkout5_o;
-wire clkout6_o;
 wire clkfbout_o;
 wire gw_vcc;
 wire gw_gnd;
@@ -30,11 +30,11 @@ PLL PLL_inst (
     .LOCK(lock),
     .CLKOUT0(clkout0),
     .CLKOUT1(clkout1),
-    .CLKOUT2(clkout2_o),
+    .CLKOUT2(clkout2),
     .CLKOUT3(clkout3_o),
     .CLKOUT4(clkout4_o),
     .CLKOUT5(clkout5_o),
-    .CLKOUT6(clkout6_o),
+    .CLKOUT6(clkout6),
     .CLKFBOUT(clkfbout_o),
     .CLKIN(clkin),
     .CLKFB(gw_gnd),
@@ -97,23 +97,23 @@ defparam PLL_inst.FCLKIN = "50";
 defparam PLL_inst.IDIV_SEL = 3;
 defparam PLL_inst.FBDIV_SEL = 1;
 defparam PLL_inst.CLKFB_SEL = "INTERNAL";
-defparam PLL_inst.ODIV0_SEL = 4;
+defparam PLL_inst.ODIV0_SEL = 2;
 defparam PLL_inst.ODIV0_FRAC_SEL = 0;
-defparam PLL_inst.ODIV1_SEL = 2;
-defparam PLL_inst.ODIV2_SEL = 8;
+defparam PLL_inst.ODIV1_SEL = 4;
+defparam PLL_inst.ODIV2_SEL = 12;
 defparam PLL_inst.ODIV3_SEL = 8;
 defparam PLL_inst.ODIV4_SEL = 8;
 defparam PLL_inst.ODIV5_SEL = 8;
-defparam PLL_inst.ODIV6_SEL = 8;
+defparam PLL_inst.ODIV6_SEL = 15;
 defparam PLL_inst.MDIV_SEL = 89;
 defparam PLL_inst.MDIV_FRAC_SEL = 0;
 defparam PLL_inst.CLKOUT0_EN = "TRUE";
 defparam PLL_inst.CLKOUT1_EN = "TRUE";
-defparam PLL_inst.CLKOUT2_EN = "FALSE";
+defparam PLL_inst.CLKOUT2_EN = "TRUE";
 defparam PLL_inst.CLKOUT3_EN = "FALSE";
 defparam PLL_inst.CLKOUT4_EN = "FALSE";
 defparam PLL_inst.CLKOUT5_EN = "FALSE";
-defparam PLL_inst.CLKOUT6_EN = "FALSE";
+defparam PLL_inst.CLKOUT6_EN = "TRUE";
 defparam PLL_inst.CLKOUT0_DT_DIR = 1'b1;
 defparam PLL_inst.CLKOUT1_DT_DIR = 1'b1;
 defparam PLL_inst.CLKOUT2_DT_DIR = 1'b1;

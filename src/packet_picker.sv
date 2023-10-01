@@ -6,6 +6,14 @@ module packet_picker
     parameter int VIDEO_ID_CODE = 4,
     parameter real VIDEO_RATE = 0,
     parameter bit IT_CONTENT = 1'b0,
+    //6'b000_000          None
+    //6'b000_001          ALLM
+    //6'b000_010          DV
+    //6'b000_100          DVGame
+    //6'b001_000          VRR
+    //6'b010_000          Freesync
+    //6'b100_000          HDR10
+    parameter bit [5:0] HDMI_PKT = 6'b000000,
     parameter int AUDIO_BIT_WIDTH = 0,
     parameter int AUDIO_RATE = 0,
     parameter bit [8*8-1:0] VENDOR_NAME = 0,
@@ -163,6 +171,8 @@ extended_metadata_packet extended_metadata_packet(.header(headers[127]), .sub(su
 
 vendor_specific_info_frame_dolbyvision vendor_specific_info_frame_dolbyvision(.header(headers[129]), .sub(subs[129]));
 
+vendor_specific_info_frame_dolbyvisiongame vendor_specific_info_frame_dolbyvisiongame(.header(headers[125]), .sub(subs[125]));
+
 vendor_specific_info_frame_allm vendor_specific_info_frame_allm(.header(headers[126]), .sub(subs[126]));
 
 dynamic_range_and_mastering dynamic_range_and_mastering(.header(headers[135]), .sub(subs[135]));
@@ -175,6 +185,7 @@ logic source_product_description_info_frame_freesync_sent = 1'b0;
 logic extended_metadata_packet_sent = 1'b0;
 logic vendor_specific_info_frame_allm_sent = 1'b0;
 logic vendor_specific_info_frame_dolbyvison_sent = 1'b0;
+logic vendor_specific_info_frame_dolbyvisongame_sent = 1'b0;
 logic dynamic_range_and_mastering_sent = 1'b0;
 logic last_clk_audio_counter_wrap = 1'b0;
 always_ff @(posedge clk_pixel)
@@ -190,6 +201,7 @@ begin
         source_product_description_info_frame_freesync_sent <= 1'b0;
         extended_metadata_packet_sent <= 1'b0;
         vendor_specific_info_frame_dolbyvison_sent <= 1'b0;
+        vendor_specific_info_frame_dolbyvisongame_sent <= 1'b0;
         vendor_specific_info_frame_allm_sent <= 1'b0;
         dynamic_range_and_mastering_sent <= 1'b0;
         packet_type <= 8'dx;
@@ -223,33 +235,45 @@ begin
             packet_type <= 8'h83;
             source_product_description_info_frame_sent <= 1'b1;
         end
-        else if (!source_product_description_info_frame_freesync_sent)
+        else if (!source_product_description_info_frame_freesync_sent && HDMI_PKT[4])
         begin
             packet_type <= 8'h83;
             source_product_description_info_frame_freesync_sent <= 1'b1;
         end
-        else if (!extended_metadata_packet_sent)
+        else if (!extended_metadata_packet_sent && HDMI_PKT[3])
         begin
             packet_type <= 8'h7f;
             extended_metadata_packet_sent <= 1'b1;
         end
-        else if (!vendor_specific_info_frame_dolbyvison_sent)
+        else if (!vendor_specific_info_frame_dolbyvison_sent &&  HDMI_PKT[1])
         begin
             packet_type <= 8'h81;
             vendor_specific_info_frame_dolbyvison_sent <= 1'b1;
         end
-        else if (!vendor_specific_info_frame_allm_sent)
+        else if (!vendor_specific_info_frame_dolbyvisongame_sent &&  HDMI_PKT[2])
+        begin
+            packet_type <= 8'h81;
+            vendor_specific_info_frame_dolbyvisongame_sent <= 1'b1;
+        end
+        else if (!vendor_specific_info_frame_allm_sent && HDMI_PKT[0])
         begin
             packet_type <= 8'h81;
             vendor_specific_info_frame_allm_sent <= 1'b1;
         end
-        else if (!dynamic_range_and_mastering_sent)
+        else if (!dynamic_range_and_mastering_sent && HDMI_PKT[5])
         begin
             packet_type <= 8'h87;
             dynamic_range_and_mastering_sent <= 1'b1;
         end
         else
             packet_type <= 8'd0;
+            //6'b000_000          None
+    //6'b000_001          ALLM
+    //6'b000_010          DV
+    //6'b000_100          DVGame
+    //6'b001_000          VRR
+    //6'b010_000          Freesync
+    //6'b100_000          HDR10
     end
 end
 

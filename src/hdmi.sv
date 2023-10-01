@@ -19,6 +19,15 @@ module hdmi
     // range (0-255).
     parameter bit IT_CONTENT = 1'b1,
 
+    //6'b000_000          None
+    //6'b000_001          ALLM
+    //6'b000_010          DV
+    //6'b000_100          DVGame
+    //6'b001_000          VRR
+    //6'b010_000          Freesync
+    //6'b100_000          HDR10
+    parameter bit [5:0] HDMI_PKT = 6'b000000,
+
     // Defaults to minimum bit lengths required to represent positions.
     // Modify these parameters if you have alternate desired bit lengths.
     parameter int BIT_WIDTH = VIDEO_ID_CODE < 4 ? 10 : VIDEO_ID_CODE == 4 ? 11 : 12,
@@ -305,6 +314,7 @@ generate
             .VIDEO_ID_CODE(VIDEO_ID_CODE),
             .VIDEO_RATE(VIDEO_RATE),
             .IT_CONTENT(IT_CONTENT),
+            .HDMI_PKT(HDMI_PKT),
             .AUDIO_RATE(AUDIO_RATE),
             .AUDIO_BIT_WIDTH(AUDIO_BIT_WIDTH),
             .VENDOR_NAME(VENDOR_NAME),

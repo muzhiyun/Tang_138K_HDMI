@@ -1,0 +1,14 @@
+[General]
+ipc_version=4
+target_device=gw5ast138b-007
+type=Serdes
+version=1.1
+
+[Config]
+CREATEIN=C:\\Users\\MuZhi\\Desktop\\zynq\\138k\\project\\HDMI\\src\\serdes
+File_Name=serdes
+KEYS=customized_phy:Customized_PHY_Top
+LANG=0
+Module_Name=SerDes_Top
+Synthesis_tool=GowinSynthesis
+customized_phy%3ACustomized_PHY_Top=C:/Users/MuZhi/Desktop/zynq/138k/project/HDMI/src/serdes/customized_phy, customized_phy, Customized_PHY_Top, customized_phy/customized_phy.ipc, C:/Users/MuZhi/Desktop/zynq/138k/project/HDMI/src/serdes/customized_phy/customized_phy.v, 0.1/0.500008, Q0_CPLL0, Q0_LANE0, Q0_REFCLK0, 200, customized_phy/temp/CUSTOMIZED/customized.mod, customized_phy/temp/CUSTOMIZED/customized.ini, , 0, 1.25, 1.25
